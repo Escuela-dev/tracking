@@ -6,6 +6,9 @@ export default defineConfig({
     globals: true,
     environment: "node",
     setupFiles: ["./__tests__/setup.ts"],
+    reporters: process.env.GITHUB_ACTIONS
+      ? ["dot", "github-actions"]
+      : ["default"],
   },
   plugins: [tsconfigPaths()],
 });
