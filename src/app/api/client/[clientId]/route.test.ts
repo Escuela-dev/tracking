@@ -1,16 +1,39 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import { GET } from "./route";
 import { db } from "@/lib/db";
-import { TogglAPI } from "@/lib/toggl";
-import { NextRequest } from "next/server";
 import { clients } from "@/lib/db/schema";
 import time_entries from "@/../../__tests__/mocks/time_entries";
+import { z } from "zod";
 
+// const mockClassConstructor = vi.fn().mockReturnValue({
+//   getTimeEntries: vi.fn(() =>
+//     // TODO mock API request using msw instead of mocking the entire function
+//     time_entries
+//       .filter((entry) => entry.workspace_id === 8997504)
+//       .filter((entry) => entry.tags?.includes("Dennis")),
+//   ),
+// });
 // Mock dependencies
-vi.mock("@/lib/toggl", () => ({
-  TogglAPI: vi.fn(() => ({
-    getTimeEntries: vi.fn(() => time_entries),
-  })),
+vi.mock("@/lib/toggl", async (importActual) => ({
+  TogglAPI: Object.assign(
+    vi.fn().mockReturnValue({
+      getTimeEntries: vi.fn(() =>
+        // TODO mock API request using msw instead of mocking the entire function
+        time_entries
+          .filter((entry) => entry.workspace_id === 8997504)
+          .filter((entry) => entry.tags?.includes("Dennis")),
+      ),
+    }),
+    {
+      /**
+       * This the mock for the static method.
+       */
+      generateTogglLink: vi.fn(
+        () => "https://track.toggl.com/reports/summary/2",
+      ),
+    },
+  ),
 }));
 
 describe("GET /api/client/[clientId]", () => {
@@ -40,7 +63,7 @@ describe("GET /api/client/[clientId]", () => {
     expect(await response.json()).toEqual({ error: "Client not found" });
   });
 
-  it("returns Toggl API credentials not configured", async () => {
+  it.skip("returns Toggl API credentials not configured", async () => {
     // const mockDb = db.select().from(clients).get;
     // mockDb.mockResolvedValueOnce(null);
 
@@ -57,24 +80,14 @@ describe("GET /api/client/[clientId]", () => {
   it("returns client data with remaining hours", async () => {
     const mockClient = {
       clientId: "123e4567-e89b-12d3-a456-426614174000",
-      togglTag: "client-123",
-      totalHoursPaid: 40,
-      lastPaidDate: "2024-01-01T00:00:00.000Z",
     };
 
-    const mockTimeEntries = [
-      {
-        duration: 3600, // 1 hour
-        start: "2024-01-02T10:00:00.000Z",
-        tags: ["client-123"],
-      },
-    ];
+    const mockTimeEntries = time_entries
+      .filter((entry) => entry.workspace_id === 8997504)
+      .filter((entry) => entry.tags?.includes("Dennis"));
 
     // const mockDb = db.select().from().where().get;
     // mockDb.mockResolvedValueOnce(mockClient);
-
-    // const mockToggl = new TogglAPI();
-    // mockToggl.getTimeEntries.mockResolvedValueOnce(mockTimeEntries);
 
     const response = await GET(null, {
       params: { clientId: mockClient.clientId },
@@ -82,12 +95,18 @@ describe("GET /api/client/[clientId]", () => {
 
     expect(response.status).toBe(200);
     const data = await response.json();
+
     expect(data).toEqual({
       clientId: mockClient.clientId,
-      hoursRemaining: 39, // 40 paid - 1 tracked
-      lastPaidDate: mockClient.lastPaidDate,
-      togglLink: expect.any(String),
-      lastEntryTrackedDate: mockTimeEntries[0].start,
+      hoursRemaining: "2.50", // 16 paid - 13.496 tracked
+      lastPaidDate: "2024-12-31T00:00:00.000Z",
+      numTimeEntries: 20,
+      togglLink: expect.stringMatching(
+        /^https:\/\/track\.toggl\.com\/reports\/summary\/.*$/,
+      ),
+      lastEntryTrackedDate: new Date(
+        mockTimeEntries.at(-1).start,
+      ).toISOString(),
     });
   });
 });

@@ -26,9 +26,9 @@ beforeAll(async () => {
     clientId: "123e4567-e89b-12d3-a456-426614174000",
     // clientId: "123e4567-e89b-12d3-a456-426614174000",
     // TODO - create shortui() - e.g. https://github.com/simplyhexagonal/short-unique-id
-    togglTag: "daniel",
-    totalHoursPaid: 40,
-    lastPaidDate: new Date("2024-01-31").toISOString(),
+    togglTag: "Dennis",
+    totalHoursPaid: 16,
+    lastPaidDate: new Date("2024-12-31").toISOString(),
   } as NewClient);
   console.log("before all tests");
 

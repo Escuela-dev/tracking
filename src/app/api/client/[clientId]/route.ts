@@ -40,11 +40,6 @@ export async function GET(
       return NextResponse.json({ error: "Client not found" }, { status: 404 });
     }
 
-    // Initialize Toggl API
-    // if (!process.env.TOGGL_API_EMAIL || !process.env.TOGGL_API_PASSWORD) {
-    //   throw new Error("Toggl API credentials not configured");
-    // }
-
     const toggl = new TogglAPI();
 
     // Get time entries since last paid date
@@ -54,10 +49,14 @@ export async function GET(
       lastPaidDate,
     );
 
+    // console.log({ timeEntries });
+
     // Calculate total hours tracked
     const totalHoursTracked = timeEntries.reduce((total, entry) => {
       return total + (entry.duration > 0 ? entry.duration / 3600 : 0);
     }, 0);
+
+    // console.log({ totalHoursTracked });
 
     // Calculate remaining hours
     const hoursRemaining = Math.max(
@@ -71,11 +70,14 @@ export async function GET(
         ? new Date(timeEntries[timeEntries.length - 1].start)
         : null;
 
+    const firstEntry = timeEntries.at(0);
+
     return NextResponse.json({
       clientId,
-      hoursRemaining,
+      hoursRemaining: hoursRemaining.toFixed(2),
       lastPaidDate: client.lastPaidDate,
-      togglLink: TogglAPI.generateTogglLink(client.togglTag),
+      numTimeEntries: timeEntries.length,
+      togglLink: TogglAPI.generateTogglLink(firstEntry.tag_ids[0]),
       lastEntryTrackedDate: lastEntryDate?.toISOString() || null,
     });
   } catch (error) {
