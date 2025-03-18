@@ -1,0 +1,32 @@
+{
+  "name": "nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed": "tsx scripts/seed.ts",
+    "generate": "npx drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=./drizzle/schema.ts",
+    "migrate": "tsx drizzle/migrate"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.10.0",
+    "@next/swc-wasm-nodejs": "13.5.1",
+    "@types/node": "20.6.2",
+    "@types/react": "18.2.22",
+    "@types/react-dom": "18.2.7",
+    "drizzle-kit": "^0.30.5",
+    "drizzle-orm": "^0.38.0",
+    "drizzle-zod": "^0.7.0",
+    "eslint": "8.49.0",
+    "eslint-config-next": "13.5.1",
+    "limbo-wasm": "^0.0.16",
+    "next": "^14",
+    "react": "18.2.0",
+    "tsx": "^4.19.3",
+    "typescript": "5.2.2",
+    "zod": "^3.23.8"
+  }
+}
