@@ -1,8 +1,8 @@
-// import { db } from "@/lib/db";
-import { clients } from "@/src/app/lib/db/schema";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 // import { sq } from 'drizzle-orm/better-sqlite3';
+// import { db } from "@/lib/db";
+import { NewClient, clients } from "@/lib/db/schema";
 
 async function seed() {
   try {
@@ -32,7 +32,7 @@ async function seed() {
       togglTag: "daniel",
       totalHoursPaid: 40,
       lastPaidDate: new Date("2024-01-31").toISOString(),
-    } as typeof clients.$inferInsert);
+    } as NewClient);
 
     console.log("✅ Database seeded successfully");
   } catch (error) {

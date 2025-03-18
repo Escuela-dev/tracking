@@ -9,7 +9,8 @@
     "lint": "next lint",
     "seed": "tsx scripts/seed.ts",
     "generate": "npx drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=./drizzle/schema.ts",
-    "migrate": "tsx drizzle/migrate"
+    "migrate": "tsx drizzle/migrate",
+    "test": "vitest"
   },
   "dependencies": {
     "@libsql/client": "^0.10.0",
@@ -28,5 +29,9 @@
     "tsx": "^4.19.3",
     "typescript": "5.2.2",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.9"
   }
 }

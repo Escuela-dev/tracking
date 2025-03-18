@@ -13,9 +13,13 @@ import * as schema from "./schema";
 // const client = createClient({
 //   url: process.env.DATABASE_URL,
 // });
+//
+const dbURL = process.env.NODE_ENV === "test" ? ":memory:" : "file:sqlite.db";
 
 const client = createClient({
-  url: "file:sqlite.db",
+  url: dbURL,
+  // url: process.env.TURSO_DATABASE_URL!,
+  // authToken: process.env.TURSO_AUTH_TOKEN!,
 });
 
 export const db = drizzle(client, { schema });

@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 
-import { db } from "@/src/app/lib/db";
-import { clients } from "@/src/app/lib/db/schema";
-import { TogglAPI } from "@/src/app/lib/toggl";
+import { db } from "@/lib/db";
+import { clients } from "@/lib/db/schema";
+import { TogglAPI } from "@/lib/toggl";
 
 const requestParamsSchema = z.object({
   clientId: z.string(),
@@ -15,6 +15,9 @@ export type ResponseError = {
   message: string;
 };
 
+// export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+// export const runtime = 'edge' // specify the runtime to be edge
+
 // export const revalidate = 60;
 
 export async function GET(
@@ -24,7 +27,7 @@ export async function GET(
   try {
     // Validate id
     const { clientId } = requestParamsSchema.parse(params);
-    console.log({ clientId });
+    // console.log({ clientId });
 
     // Get client from database
     const client = await db
@@ -79,14 +82,13 @@ export async function GET(
       lastEntryTrackedDate: lastEntryDate?.toISOString() || null,
     });
   } catch (error) {
-    console.error("Error processing request:", error);
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid client ID format" },
         { status: 400 },
       );
     }
+    console.error("Error processing request:", error);
 
     return NextResponse.json(
       { error: "Internal server error" },
