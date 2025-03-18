@@ -4,13 +4,13 @@ import { db } from "@/lib/db";
 import { TogglAPI } from "@/lib/toggl";
 import { NextRequest } from "next/server";
 import { clients } from "@/lib/db/schema";
+import time_entries from "@/../../__tests__/mocks/time_entries";
 
 // Mock dependencies
 vi.mock("@/lib/toggl", () => ({
   TogglAPI: vi.fn(() => ({
-    getTimeEntries: vi.fn(),
+    getTimeEntries: vi.fn(() => time_entries),
   })),
-  generateTogglLink: vi.fn(),
 }));
 
 describe("GET /api/client/[clientId]", () => {

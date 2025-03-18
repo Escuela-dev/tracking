@@ -41,14 +41,11 @@ export async function GET(
     }
 
     // Initialize Toggl API
-    if (!process.env.TOGGL_API_EMAIL || !process.env.TOGGL_API_PASSWORD) {
-      throw new Error("Toggl API credentials not configured");
-    }
+    // if (!process.env.TOGGL_API_EMAIL || !process.env.TOGGL_API_PASSWORD) {
+    //   throw new Error("Toggl API credentials not configured");
+    // }
 
-    const toggl = new TogglAPI(
-      process.env.TOGGL_API_EMAIL,
-      process.env.TOGGL_API_PASSWORD,
-    );
+    const toggl = new TogglAPI();
 
     // Get time entries since last paid date
     const lastPaidDate = new Date(client.lastPaidDate);
