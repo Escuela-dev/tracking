@@ -21,9 +21,7 @@ A Next.js application for tracking student and client hours using Toggl Track in
 Create a `.env` file with:
 
 ```bash
-TOGGL_API_EMAIL=your-email@example.com
-TOGGL_API_PASSWORD=your-password
-# DATABASE_URL=file:sqlite.db
+cp .env.example .env.local
 ```
 
 ### Installation

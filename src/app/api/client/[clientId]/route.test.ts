@@ -14,6 +14,7 @@ import { z } from "zod";
 //       .filter((entry) => entry.tags?.includes("Dennis")),
 //   ),
 // });
+
 // Mock dependencies
 vi.mock("@/lib/toggl", async (importActual) => ({
   TogglAPI: Object.assign(

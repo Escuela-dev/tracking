@@ -21,7 +21,7 @@ export type ResponseError = {
 // export const revalidate = 60;
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: { clientId: string } },
 ): Promise<NextResponse<{} | ResponseError>> {
   try {

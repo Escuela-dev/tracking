@@ -14,12 +14,16 @@ import * as schema from "./schema";
 //   url: process.env.DATABASE_URL,
 // });
 //
-const dbURL = process.env.NODE_ENV === "test" ? ":memory:" : "file:sqlite.db";
+const dbURL =
+  process.env.NODE_ENV === "test" ? ":memory:" : process.env.TURSO_DATABASE_URL;
+
+if (process.env.NODE_ENV !== "test" && !dbURL) {
+  throw new Error("TURSO_DATABASE_URL environment variable is not set");
+}
 
 const client = createClient({
   url: dbURL,
-  // url: process.env.TURSO_DATABASE_URL!,
-  // authToken: process.env.TURSO_AUTH_TOKEN!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
 export const db = drizzle(client, { schema });
