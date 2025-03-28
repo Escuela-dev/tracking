@@ -13,7 +13,7 @@ import * as schema from "./schema";
 // const client = createClient({
 //   url: process.env.DATABASE_URL,
 // });
-//
+
 const dbURL =
   process.env.NODE_ENV === "test" ? ":memory:" : process.env.TURSO_DATABASE_URL;
 
