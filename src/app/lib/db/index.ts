@@ -17,10 +17,6 @@ import * as schema from "./schema";
 const dbURL =
   process.env.NODE_ENV === "test" ? ":memory:" : process.env.TURSO_DATABASE_URL;
 
-if (process.env.NODE_ENV !== "test" && !dbURL) {
-  throw new Error("TURSO_DATABASE_URL environment variable is not set");
-}
-
 const client = createClient({
   url: dbURL,
   authToken: process.env.TURSO_AUTH_TOKEN,
