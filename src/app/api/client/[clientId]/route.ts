@@ -77,7 +77,9 @@ export async function GET(
       hoursRemaining: hoursRemaining.toFixed(2),
       lastPaidDate: client.lastPaidDate,
       numTimeEntries: timeEntries.length,
-      togglLink: TogglAPI.generateTogglLink(firstEntry.tag_ids[0]),
+      togglLink: firstEntry
+        ? TogglAPI.generateTogglLink(firstEntry.tag_ids[0])
+        : null,
       lastEntryTrackedDate: lastEntryDate?.toISOString() || null,
     });
   } catch (error) {

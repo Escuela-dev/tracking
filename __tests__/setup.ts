@@ -3,7 +3,7 @@ import { afterAll, afterEach, beforeAll } from "vitest";
 // import { reset } from "drizzle-seed";
 
 import { db } from "@/lib/db";
-import { NewClient, clients } from "@/lib/db/schema";
+import { type NewClient, clients } from "@/lib/db/schema";
 import { sql } from "drizzle-orm";
 
 beforeAll(async () => {
