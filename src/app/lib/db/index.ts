@@ -1,5 +1,5 @@
-import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client/web";
+import { drizzle } from "drizzle-orm/libsql/web";
 // import { drizzle } from "drizzle-orm/better-sqlite3";
 // import { Database } from "limbo-wasm";
 import * as schema from "./schema";
